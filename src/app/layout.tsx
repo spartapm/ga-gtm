@@ -38,9 +38,9 @@ export default function RootLayout({
         </Script>
 
         {/*
-          GA4(G-9PME8XLFFL)는 이제 GTM 컨테이너(GTM-KFF7FSW5) 안의
-          'GA4 설정(Google 태그)' 태그로 관리합니다.
-          중복 집계 방지를 위해 gtag.js 직접 삽입은 제거했습니다.
+          GA4(측정 ID: G-CFD7BKBP56)는 GTM 컨테이너(GTM-KFF7FSW5) 안의
+          'GA4 설정(Google 태그)' 태그에서 관리합니다.
+          중복 집계 방지를 위해 gtag.js 직접 삽입은 두지 않습니다.
         */}
 
         {/* Google Tag Manager */}
