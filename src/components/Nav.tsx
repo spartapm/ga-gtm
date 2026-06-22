@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 const links = [
   { href: "/", label: "🛍️ 쇼핑몰 홈" },
   { href: "/checkout", label: "🧾 주문/결제" },
+  { href: "/taxonomy", label: "📋 이벤트 설계" },
 ];
 
 export default function Nav() {
