@@ -32,32 +32,33 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
-        {/* dataLayer 전역 초기화: 페이지 인터랙션 전에 실행되도록 보장 */}
+        {/* dataLayer 전역 초기화: GTM 로드 전에 실행되도록 보장 */}
         <Script id="datalayer-init" strategy="beforeInteractive">
           {`window.dataLayer = window.dataLayer || [];`}
         </Script>
 
-        {/* Google tag (gtag.js) - GA4 */}
-        <Script
-          id="gtag-src"
-          src="https://www.googletagmanager.com/gtag/js?id=G-9PME8XLFFL"
-          strategy="afterInteractive"
-        />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-9PME8XLFFL');`}
-        </Script>
-
         {/*
-          실제 GTM 연동 시 아래 스니펫의 GTM-XXXXXXX 를 본인 컨테이너 ID로 교체하세요.
-          <Script id="gtm" strategy="afterInteractive">
-            {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-XXXXXXX');`}
-          </Script>
+          GA4(G-9PME8XLFFL)는 이제 GTM 컨테이너(GTM-KFF7FSW5) 안의
+          'GA4 설정(Google 태그)' 태그로 관리합니다.
+          중복 집계 방지를 위해 gtag.js 직접 삽입은 제거했습니다.
         */}
+
+        {/* Google Tag Manager */}
+        <Script id="gtm" strategy="afterInteractive">
+          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-KFF7FSW5');`}
+        </Script>
       </head>
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-900">
+        {/* Google Tag Manager (noscript) - JS 미지원 환경 대비 */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-KFF7FSW5"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
+
         {/* 라우트 변경 시 GA4 page_view 전송 */}
         <Suspense fallback={null}>
           <Analytics />
