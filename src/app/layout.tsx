@@ -33,6 +33,20 @@ export default function RootLayout({
         <Script id="datalayer-init" strategy="beforeInteractive">
           {`window.dataLayer = window.dataLayer || [];`}
         </Script>
+
+        {/* Google tag (gtag.js) - GA4 */}
+        <Script
+          id="gtag-src"
+          src="https://www.googletagmanager.com/gtag/js?id=G-9PME8XLFFL"
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-9PME8XLFFL');`}
+        </Script>
+
         {/*
           실제 GTM 연동 시 아래 스니펫의 GTM-XXXXXXX 를 본인 컨테이너 ID로 교체하세요.
           <Script id="gtm" strategy="afterInteractive">
