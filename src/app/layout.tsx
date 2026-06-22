@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import { Suspense } from "react";
+import Analytics from "@/components/Analytics";
+import Nav from "@/components/Nav";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -55,6 +58,11 @@ gtag('config', 'G-9PME8XLFFL');`}
         */}
       </head>
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-900">
+        {/* 라우트 변경 시 GA4 page_view 전송 */}
+        <Suspense fallback={null}>
+          <Analytics />
+        </Suspense>
+        <Nav />
         {children}
       </body>
     </html>
