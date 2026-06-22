@@ -27,13 +27,15 @@ export default function Home() {
   const [signupLoading, setSignupLoading] = useState(false);
   const [signupDone, setSignupDone] = useState(false);
 
-  // 1) 일반 클릭 트리거용: 할인 쿠폰 받기
+  // 1) 할인 쿠폰 받기: GTM이 잡을 수 있도록 dataLayer로 직접 push
   const handleCoupon = () => {
     setCouponClicked(true);
-    trackEvent({
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
       event: "coupon_click",
       button_name: "할인 쿠폰 받기",
     });
+    console.log("[dataLayer push] coupon_click");
   };
 
   // 2) 데이터 레이어 - 클릭 기준: 장바구니 담기
