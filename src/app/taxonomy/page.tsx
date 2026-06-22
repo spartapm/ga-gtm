@@ -76,7 +76,7 @@ const events: EventRow[] = [
     category: "콘텐츠 소비",
     categoryColor: "bg-violet-100 text-violet-700",
     intent:
-      "앱 내부 코드가 아닌 GTM 자체 내장 스크롤 트리거로 감지.",
+      "GA4 향상된 측정(Enhanced Measurement)의 스크롤 자동 수집으로 감지(기본 90% 도달 시).",
   },
   {
     no: 7,
@@ -87,7 +87,7 @@ const events: EventRow[] = [
     category: "페이지뷰(SPA 보정)",
     categoryColor: "bg-slate-200 text-slate-700",
     intent:
-      "SPA는 새로고침이 없어 GTM이 페이지 이동을 못 잡으므로, 직접 dataLayer로 보정. GTM에서 page_view 태그로 연결.",
+      "SPA는 새로고침이 없어 gtag가 페이지 이동을 자동으로 못 잡으므로, 라우트 변경 시 gtag로 직접 page_view를 보정 전송.",
   },
 ];
 
@@ -187,8 +187,8 @@ export default function TaxonomyPage() {
         <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
           <p className="text-xs font-semibold text-slate-400">수집 방식</p>
           <p className="mt-1 text-sm text-slate-700">
-            ①은 단순 클릭, ②~⑤·⑦은 <code>dataLayer.push</code>, ⑥은 GTM 내장
-            스크롤 트리거로 감지합니다.
+            ①~⑤·⑦은 <code>gtag(&apos;event&apos;, ...)</code>로 GA4에 직접
+            전송, ⑥은 GA4 향상된 측정으로 자동 수집합니다.
           </p>
         </div>
         <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -209,8 +209,8 @@ export default function TaxonomyPage() {
       </section>
 
       <p className="mt-6 text-xs text-slate-400">
-        ※ 본 데모는 GTM 컨테이너(GTM-KFF7FSW5)를 통해 위 이벤트를 GA4로
-        전달합니다. 실제 전송 여부는 GTM 미리보기 / GA4 DebugView에서 확인하세요.
+        ※ 본 데모는 GTM 없이 gtag.js로 GA4(측정 ID: G-CFD7BKBP56)에 직접
+        전송합니다. 실제 전송 여부는 GA4 실시간 보고서 / DebugView에서 확인하세요.
       </p>
     </main>
   );

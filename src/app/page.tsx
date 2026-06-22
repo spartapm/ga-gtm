@@ -5,16 +5,20 @@ import { useState } from "react";
 declare global {
   interface Window {
     dataLayer: unknown[];
+    gtag?: (...args: unknown[]) => void;
   }
 }
 
-/** dataLayer 안전 push 헬퍼 (dataLayer 미초기화 상황도 방어) */
-function pushDataLayer(payload: Record<string, unknown>) {
+/**
+ * GA4 이벤트 전송 헬퍼 (gtag 직접 연동).
+ * { event, ...params } 형태를 받아 gtag('event', name, params)로 전송한다.
+ */
+function trackEvent(payload: { event: string } & Record<string, unknown>) {
   if (typeof window === "undefined") return;
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push(payload);
+  const { event, ...params } = payload;
+  window.gtag?.("event", event, params);
   // 실습 확인용 콘솔 로그
-  console.log("[dataLayer push]", payload);
+  console.log("[GA4 event]", event, params);
 }
 
 export default function Home() {
@@ -26,7 +30,7 @@ export default function Home() {
   // 1) 일반 클릭 트리거용: 할인 쿠폰 받기
   const handleCoupon = () => {
     setCouponClicked(true);
-    pushDataLayer({
+    trackEvent({
       event: "coupon_click",
       button_name: "할인 쿠폰 받기",
     });
@@ -35,7 +39,7 @@ export default function Home() {
   // 2) 데이터 레이어 - 클릭 기준: 장바구니 담기
   const handleAddToCart = () => {
     setCartAdded(true);
-    pushDataLayer({
+    trackEvent({
       event: "add_to_cart",
       product_name: "테스트 맨투맨",
       price: 49000,
@@ -50,7 +54,7 @@ export default function Home() {
     setTimeout(() => {
       setSignupLoading(false);
       setSignupDone(true);
-      pushDataLayer({
+      trackEvent({
         event: "sign_up_complete",
         user_status: "premium_member",
       });

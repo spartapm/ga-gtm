@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { useState } from "react";
 
-function pushDataLayer(payload: Record<string, unknown>) {
+/** GA4 이벤트 전송 헬퍼 (gtag 직접 연동) */
+function trackEvent(payload: { event: string } & Record<string, unknown>) {
   if (typeof window === "undefined") return;
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push(payload);
-  console.log("[dataLayer push]", payload);
+  const { event, ...params } = payload;
+  window.gtag?.("event", event, params);
+  console.log("[GA4 event]", event, params);
 }
 
 export default function CheckoutPage() {
@@ -18,7 +19,7 @@ export default function CheckoutPage() {
   // begin_checkout: 결제 시작
   const handleBeginCheckout = () => {
     setCheckoutStarted(true);
-    pushDataLayer({
+    trackEvent({
       event: "begin_checkout",
       product_name: "테스트 맨투맨",
       price: 49000,
@@ -34,7 +35,7 @@ export default function CheckoutPage() {
     setTimeout(() => {
       setPurchasing(false);
       setPurchased(true);
-      pushDataLayer({
+      trackEvent({
         event: "purchase",
         transaction_id: `T-${Date.now()}`,
         product_name: "테스트 맨투맨",
